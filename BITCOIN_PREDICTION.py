@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 import numpy as np
 import pandas as pd
 from xgboost import XGBRegressor
@@ -65,9 +62,10 @@ def main():
     
     start_date = df["date"].iloc[-1] + pd.Timedelta(days=1)
     future_dates = pd.date_range(start=start_date, periods=365, freq='D')
-    predicted_df = pd.DataFrame({"date": future_dates, "predicted_price": future_prices})
+    predicted_df = pd.DataFrame({"date": future_dates, "predicted_price": future_prices ,"currency": "USD"})
     
     print(predicted_df)
 
 if __name__ == "__main__":
     main()
+    
