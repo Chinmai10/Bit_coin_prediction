@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from xgboost import XGBRegressor
-from binance.client import Client
+from binance.client import Clientx  
 import datetime
 
 # Initialize Binance client
@@ -68,4 +68,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+         
