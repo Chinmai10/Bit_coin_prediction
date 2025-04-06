@@ -60,6 +60,16 @@ def predict_future_prices(model, last_known_prices, n_in=20, days=365):
         last_known_prices.append(next_price)
     return future_prices
 
+
+
+@app.get("/")
+def read_root():
+    return {"Welcome to the Cryptocurrency Price Prediction" ,   
+            
+            "Use the /predict endpoint to get predictions for any cryptocurrency in BTC." , 
+            "Example: /predict?symbol=ETHBTC or /predict?symbol=DOGEBTC"}  
+
+
 # FastAPI endpoint to predict cryptocurrency prices
 @app.get("/predict")
 def predict_prices(symbol: str):
