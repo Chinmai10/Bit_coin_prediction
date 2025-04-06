@@ -1,20 +1,39 @@
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 import numpy as np
 import pandas as pd
 from xgboost import XGBRegressor
-from binance.client import Clientx  
+from binance.client import Client
 import datetime
 
 # Initialize Binance client
 client = Client()
 
-# Function to fetch historical data for any cryptocurrency pair
+# Initialize FastAPI app
+app = FastAPI()
+
+# Function to fetch historical data for any cryptocurrency in BTC
 def fetch_data(symbol, start_date="1 Jan, 2020"):
-    symbol = symbol.upper()  # Ensure the symbol is in uppercase
-    klines = client.get_historical_klines(symbol, Client.KLINE_INTERVAL_1DAY, start_date)
-    df = pd.DataFrame(klines, columns=["open_time", "open", "high", "low", "close", "volume", "close_time", "quote", "no_trades", "base_buy", "quote_buy", "ignore"])
-    df["date"] = pd.to_datetime(df["open_time"], unit='ms')
-    df["close"] = df["close"].astype(float)
-    return df[["date", "close"]]
+    try:
+        # Fetch historical data for the given symbol (e.g., ETHBTC, DOGEBTC)
+        klines = client.get_historical_klines(symbol, Client.KLINE_INTERVAL_1DAY, start_date)
+        df = pd.DataFrame(klines, columns=["open_time", "open", "high", "low", "close", "volume", "close_time", "quote", "no_trades", "base_buy", "quote_buy", "ignore"])
+        df["date"] = pd.to_datetime(df["open_time"], unit='ms')
+        df["close"] = df["close"].astype(float)
+        return df[["date", "close"]]
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error fetching data for {symbol}: {e}")
+
+# Function to validate cryptocurrency symbol
+def validate_symbol(symbol):
+    try:
+        # Query Binance API to check if the symbol exists
+        exchange_info = client.get_exchange_info()
+        symbols = [s['symbol'] for s in exchange_info['symbols']]
+        if symbol not in symbols:
+            raise HTTPException(status_code=400, detail=f"Invalid cryptocurrency symbol: {symbol}")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error validating symbol {symbol}: {e}")
 
 # Function to prepare data for model training
 def prepare_data(df, n_in=20, n_out=1):
@@ -41,11 +60,18 @@ def predict_future_prices(model, last_known_prices, n_in=20, days=365):
         last_known_prices.append(next_price)
     return future_prices
 
-# Main function
-def main():
-    symbol = input("Enter the cryptocurrency pair (e.g., BTCUSDT): ").upper()
+# FastAPI endpoint to predict cryptocurrency prices
+@app.get("/predict")
+def predict_prices(symbol: str):
+    symbol = symbol.upper()
+    
+    # Validate the symbol
+    validate_symbol(symbol)
+    
+    # Fetch historical data
     df = fetch_data(symbol)
     
+    # Prepare data for training
     full_df = prepare_data(df)
     
     input_col_names = [f't{i}' for i in range(20, 0, -1)]
@@ -62,10 +88,13 @@ def main():
     
     start_date = df["date"].iloc[-1] + pd.Timedelta(days=1)
     future_dates = pd.date_range(start=start_date, periods=365, freq='D')
-    predicted_df = pd.DataFrame({"date": future_dates, "predicted_price": future_prices ,"currency": "USD"})
+    predictions = [{"date": str(date.date()), "predicted_price": price} for date, price in zip(future_dates, future_prices)]
     
-    print(predicted_df)
-
-if __name__ == "__main__":
-    main()
-         
+    # Return predictions as JSON
+    return {
+        "symbol": symbol,
+        "The predicted value is": {
+            "date": str(future_dates[364].date()),
+            "price": future_prices[364]
+        }
+    }
