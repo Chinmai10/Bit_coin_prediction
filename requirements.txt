@@ -1,0 +1,6 @@
+fastapi==0.100.0
+uvicorn==0.22.0
+pandas==2.1.0
+numpy==1.24.4
+xgboost==1.7.6
+python-binance==1.0.16
