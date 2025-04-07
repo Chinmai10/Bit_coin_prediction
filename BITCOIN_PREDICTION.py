@@ -105,6 +105,8 @@ def predict_prices(symbol: str):
         "symbol": symbol,
         "The predicted value is": {
             "date": str(future_dates[364].date()),
-            "price": future_prices[364]
+            "price": future_prices[364] 
         }
     }
+    
+    
