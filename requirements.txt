@@ -4,3 +4,4 @@ pandas==2.1.0
 numpy==1.24.4
 xgboost==1.7.6
 python-binance==1.0.16
+python-3.10.13

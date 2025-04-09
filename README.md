@@ -1,65 +1,31 @@
-# Bitcoin Price Prediction
+# Bitcoin Price Prediction API
 
-This project predicts future Bitcoin prices using historical data and machine learning. The model is built using the XGBoost library and fetches historical data from the Binance API.
+This project is a FastAPI-based web application that predicts future Bitcoin (or other cryptocurrency) prices using historical data and machine learning. The model is built using the XGBoost library and fetches historical data from the Binance API.
+
+## Features
+
+- Fetches historical cryptocurrency price data from Binance.
+- Validates cryptocurrency symbols using Binance's exchange information.
+- Prepares data for machine learning by creating lagged features.
+- Trains an XGBoost regression model to predict future price changes.
+- Predicts cryptocurrency prices for the next 365 days.
+- Provides a RESTful API endpoint to fetch predictions in JSON format.
 
 ## Requirements
 
-- Python 3.x
+- Python 3.8 or higher
+- FastAPI
+- Uvicorn
 - NumPy
 - Pandas
 - XGBoost
 - Binance API
 
-You can install the required packages using pip:
-
-```sh
-pip install numpy pandas xgboost python-binance
-```
-
-## Usage
+## Installation
 
 1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourusername/bitcoin_prediction.git
+   cd bitcoin_prediction
 
-```sh
-git clone https://github.com/yourusername/bitcoin_prediction.git
-cd bitcoin_prediction
-```
 
-2. Run the script:
-
-```sh
-python BITCOIN_PREDICTION.py
-```
-
-3. Enter the cryptocurrency pair when prompted (e.g., `BTCUSDT`).
-
-The script will fetch historical data, train the model, and predict future prices for the next 365 days. The predicted prices will be printed in the console.
-
-## Functions
-
-### `fetch_data(symbol, start_date="1 Jan, 2020")`
-
-Fetches historical data for the given cryptocurrency pair from Binance.
-
-### `prepare_data(df, n_in=20, n_out=1)`
-
-Prepares the data for model training by creating lagged features and target variables.
-
-### `predict_future_prices(model, last_known_prices, n_in=20, days=365)`
-
-Predicts future prices using the trained model and the last known prices.
-
-## Main Function
-
-### `main()`
-
-- Prompts the user to enter the cryptocurrency pair.
-- Fetches historical data.
-- Prepares the data for training.
-- Trains the XGBoost model.
-- Predicts future prices for the next 365 days.
-- Prints the predicted prices.
-
-## License
-
-This project is licensed under the MIT License.
