@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import numpy as np
 import pandas as pd
+import sklearn as sklearn
 from xgboost import XGBRegressor
 from binance.client import Client
 import datetime
@@ -23,6 +24,7 @@ def fetch_data(symbol, start_date="1 Jan, 2020"):
         return df[["date", "close"]]
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error fetching data for {symbol}: {e}")
+
 
 # Function to validate cryptocurrency symbol
 def validate_symbol(symbol):
@@ -103,6 +105,7 @@ def predict_prices(symbol: str):
     # Return predictions as JSON
     return {
         "symbol": symbol,
+        "predictions": predictions,
         "The predicted value is": {
             "date": str(future_dates[364].date()),
             "price": future_prices[364] 
