@@ -7,6 +7,7 @@ from xgboost import XGBRegressor
 from binance.client import Client
 import datetime
 
+
 # Initialize Binance client
 client = Client()
 
