@@ -65,6 +65,7 @@ def predict_future_prices(model, last_known_prices, n_in=20, days=365):
 
 
 
+
 @app.get("/")
 def read_root():
     return {"Welcome to the Cryptocurrency Price Prediction" ,   
