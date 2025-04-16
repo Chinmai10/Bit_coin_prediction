@@ -71,7 +71,7 @@ def read_root():
     return {"Welcome to the Cryptocurrency Price Prediction" ,   
             
             "Use the /predict endpoint to get predictions for any cryptocurrency in BTC." , 
-            "Example: /predict?symbol=ETCBTC or /predict?symbol=DOGEBTC"}  
+            "Example: /predict?symbol=DOGEBTC"}  
 
 
 # FastAPI endpoint to predict cryptocurrency prices
@@ -107,7 +107,7 @@ def predict_prices(symbol: str):
     # Return predictions as JSON
     return {
         "symbol": symbol,
-        "predictions": predictions,
+        
         "The predicted value is": {
             "date": str(future_dates[364].date()),
             "price": round(future_prices[364], 6)  
