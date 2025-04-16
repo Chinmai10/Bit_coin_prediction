@@ -107,7 +107,6 @@ def predict_prices(symbol: str):
     # Return predictions as JSON
     return {
         "symbol": symbol,
-        
         "The predicted value is": {
             "date": str(future_dates[364].date()),
             "price": round(future_prices[364], 6)  
