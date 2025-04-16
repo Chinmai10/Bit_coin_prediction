@@ -71,7 +71,7 @@ def read_root():
     return {"Welcome to the Cryptocurrency Price Prediction" ,   
             
             "Use the /predict endpoint to get predictions for any cryptocurrency in BTC." , 
-            "Example: /predict?symbol=DOGEBTC"}  
+            "Example: /predict?symbol=DOGEBTC etc." ,}  
 
 
 # FastAPI endpoint to predict cryptocurrency prices
