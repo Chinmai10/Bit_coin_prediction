@@ -36,7 +36,9 @@ COPY --from=builder /usr/local/include /usr/local/include
 COPY . .
 
 # Expose the app port
-EXPOSE 8080
+EXPOSE 8000
 
 # Run the app
-CMD ["uvicorn", "BITCOIN_PREDICTION:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "BITCOIN_PREDICTION:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+# CMD ["python", "BITCOIN_PREDICTION.py"]
